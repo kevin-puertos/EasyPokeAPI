@@ -1,21 +1,25 @@
 package io.github.macebot.cobble_api.pokemon.controller;
 
+import io.github.macebot.cobble_api.pokemon.dto.PokemonViewDto;
+import io.github.macebot.cobble_api.pokemon.service.IPokemonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@RequiredArgsConstructor
 public class PokemonController {
 
+    private final IPokemonService pokemonService;
 
 
-    @GetMapping(value = "/pokemon/Charizard")
-    public  String  getCharizard(){
-        String uri = "https://pokeapi.co/api/v2/pokemon/charizard";
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
-
-        return  result;
+    @GetMapping("/pokemon/{namePokemon}")
+    public PokemonViewDto viewPokemon(@PathVariable String namePokemon){
+        return pokemonService.viewPokemon(namePokemon);
     }
+
+
 
 }
