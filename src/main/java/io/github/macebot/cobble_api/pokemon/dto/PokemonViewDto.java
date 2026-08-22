@@ -1,19 +1,16 @@
 package io.github.macebot.cobble_api.pokemon.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@Getter @Setter
-public class PokemonViewDto {
-    private String name;
-    private List<String> types;
-    private List<String> abilities;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record PokemonViewDto(
+        Long id,
+        String name,
+        List<TypeDto> types,
+        List<AbilityDto> abilities,
+        List<StatDto> stats
 
-
-
-
+) {
 }
