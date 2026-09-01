@@ -1,5 +1,6 @@
 package io.github.macebot.cobble_api.pokemon.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Getter @Setter
 public class Ability {
     @Id
-    private Long abilityid;
+    @Column(name="ability_name")
     private String name;
     private String description;
 

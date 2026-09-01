@@ -2,6 +2,7 @@ package io.github.macebot.cobble_api.pokemon.service;
 
 import io.github.macebot.cobble_api.exception.exeptions.ResourceNotFound;
 import io.github.macebot.cobble_api.pokemon.dto.*;
+import io.github.macebot.cobble_api.pokemon.entity.Pokemon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -165,5 +166,16 @@ public class PokemonService implements IPokemonService{
         PokemonByType pokemonByType = new PokemonByType(name,pokemonWithtype);
 
         return pokemonByType;
+    }
+
+
+    @Override
+    public PokemonViewDto loadPokemon(Pokemon pokemon) {
+
+
+
+
+
+        return null;
     }
 }

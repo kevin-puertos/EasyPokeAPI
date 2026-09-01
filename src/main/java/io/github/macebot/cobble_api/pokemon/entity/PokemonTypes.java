@@ -12,15 +12,16 @@ public class PokemonTypes {
     @EmbeddedId
     private PokemonTypeId pokemonTypeId;
 
-    @MapsId("pokemonId")
     @ManyToOne
+    @MapsId("pokemonId")
     @JoinColumn(name ="pokemon_id")
     private Pokemon pokemon;
 
-    @MapsId("typeId")
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @MapsId("typeName")
+    @JoinColumn(name = "type_name")
     private Type type;
+
 
 
 }

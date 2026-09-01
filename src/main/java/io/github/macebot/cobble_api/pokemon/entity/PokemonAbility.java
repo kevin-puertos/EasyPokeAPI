@@ -12,15 +12,15 @@ public class PokemonAbility {
     @EmbeddedId
     private PokemonAbilityId pokemonAbilityId;
 
-    @MapsId("pokemon_id")
     @ManyToOne
+    @MapsId("pokemonId")
     @JoinColumn(name = "pokemon_id")
     private Pokemon pokemon;
 
 
-    @MapsId("ability_id")
     @ManyToOne
-    @JoinColumn(name = "ability_id")
+    @MapsId("abilityName")
+    @JoinColumn(name = "ability_name")
     private Ability ability;
 
 }

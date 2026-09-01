@@ -11,6 +11,7 @@ import java.util.Set;
 @Getter @Setter
 public class Pokemon {
     @Id
+    @Column(name = "pokemon_id")
     Long id;
     String name;
     String image_url;
@@ -18,7 +19,7 @@ public class Pokemon {
     @OneToMany(mappedBy = "pokemon")
     Set<PokemonTypes> pokemonTypesList = new HashSet<>();
 
-    @OneToMany(mappedBy = "ability")
+    @OneToMany(mappedBy = "pokemon")
     Set<PokemonAbility> pokemonAbilities = new HashSet<>() ;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -31,7 +32,6 @@ public class Pokemon {
     joinColumns = @JoinColumn(name = "pokemon_id"),
     inverseJoinColumns = @JoinColumn(name = "movment_id"))
     Set<Movment> movments = new HashSet<>();
-
 
 
 }
