@@ -1,8 +1,13 @@
 package io.github.macebot.cobble_api.pokemon.service;
 
+import io.github.macebot.cobble_api.client.service.IPokeApiClient;
 import io.github.macebot.cobble_api.exception.exeptions.ResourceNotFound;
 import io.github.macebot.cobble_api.pokemon.dto.*;
+import io.github.macebot.cobble_api.pokemon.entity.Movment;
 import io.github.macebot.cobble_api.pokemon.entity.Pokemon;
+import io.github.macebot.cobble_api.pokemon.enums.MovmentType;
+import io.github.macebot.cobble_api.pokemon.mapper.IPokemonMapper;
+import io.github.macebot.cobble_api.pokemon.repository.IPokemonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -19,7 +24,9 @@ import java.util.List;
 public class PokemonService implements IPokemonService{
 
     private final ObjectMapper objectMapper;
-    private final RestClient restClient;
+    private final IPokemonMapper pokemonMapper;
+    private final IPokeApiClient pokeApiClient;
+    private final IPokemonRepository pokemonRepository;
 
     @Override
     public PokemonViewDto viewPokemon(String pokemonName) {
@@ -28,7 +35,7 @@ public class PokemonService implements IPokemonService{
 
 
     @Override
-    public List<AbilityDto> processAbilities(JsonNode root,String json) {
+    public List<AbilityDto> processAbilities(JsonNode root) {
         JsonNode abilitiesNode =root.get("abilities");
 
         List<AbilityDto> abilitiesDto = new ArrayList<>();
@@ -50,32 +57,47 @@ public class PokemonService implements IPokemonService{
     }
 
     @Override
-    public List<StatDto> processStats(JsonNode root,String json) {
+    public StatsDto processStats(JsonNode root) {
         //Estadisticas
 
         JsonNode stats = root.get("stats");
 
-        List<StatDto> statDtos = new ArrayList<>();
-
-        if(stats.isArray()){
+        StatsDto statsDto = new StatsDto();
 
             for(JsonNode item: stats){
 
                 String statName = item.get("stat").get("name").asString();
-                Long statValue = item.get("base_stat").asLong();
-                StatDto statDto = new StatDto(statName,statValue);
-                statDtos.add(statDto);
 
+                switch (statName){
+                    case "hp":
+                        statsDto.setHp(item.get("base_stat").asLong());
+                        break;
+                    case "attack":
+                        statsDto.setAtk(item.get("base_stat").asLong());
+                        break;
+                    case "defense":
+                        statsDto.setDef(item.get("base_stat").asLong());
+                        break;
+                    case "special-attack":
+                        statsDto.setAtaEsp(item.get("base_stat").asLong());
+                        break;
+
+                    case "special-defense":
+                        statsDto.setDefEsp(item.get("base_stat").asLong());
+                        break;
+
+                    case "speed":
+                        statsDto.setSpe(item.get("base_stat").asLong());
+                        break;
+                    default:
+                        break;
+                }
             }
-
-
-
-        }
-        return  statDtos;
+            return  statsDto;
     }
 
     @Override
-    public List<TypeDto> processTypes(JsonNode root,String json) {
+    public List<TypeDto> processTypes(JsonNode root) {
 
         //Tipos
         JsonNode types = root.get("types");
@@ -83,7 +105,7 @@ public class PokemonService implements IPokemonService{
         if(types.isArray()){
 
             for(JsonNode item : types){
-                String nametype = item.get("type").get("name").asText();
+                String nametype = item.get("type").get("name").asString();
                 Long slot = item.get("slot").asLong();
 
                 TypeDto type = new TypeDto(slot,nametype);
@@ -94,60 +116,17 @@ public class PokemonService implements IPokemonService{
         return  typesDto;
     }
 
-    @Override
-    public String getPokemonJson(String pokemonName) {
-        return  restClient
-                .get()
-                .uri("/pokemon/{pokemonName}",pokemonName)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,
-                        ((request, response) ->
-                        {throw new ResourceNotFound("Pokemon not found");}))
-                .body(String.class);
-
-    }
-
-    @Override
-    public PokemonViewDto processJson(String pokemonName) {
-        String json = this.getPokemonJson(pokemonName);
-
-        //Convertir de String a JsonNode
-        JsonNode root = objectMapper.readTree(json);
-
-        String name = root.get("name").asText();
-        Long id = root.get("id").asLong();
-
-        List<AbilityDto> abilitiesDtos =processAbilities(root,json);
-        List<StatDto> statDtos = processStats(root,json);
-        List<TypeDto> typesDto = processTypes(root,json);
-
-        return new PokemonViewDto(id,name,typesDto,abilitiesDtos,statDtos);
-    }
-
-
-    @Override
-    public String getTypeJson(String type) {
-        return  restClient
-                .get()
-                .uri("/type/{type}",type)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,
-                        ((request, response) ->
-                        {throw new ResourceNotFound("Type not found");}))
-                .body(String.class);
-
-    }
 
     @Override
     public PokemonByType getPokemonByType(String type) {
-        String json = getTypeJson(type);
+        String json = pokeApiClient.getTypeJson(type);
 
         JsonNode root = objectMapper.readTree(json);
 
 
         List <PokemonWithTypeDto> pokemonWithtype = new ArrayList<>();
 
-        String name = root.get("name").asText();
+        String name = root.get("name").asString();
 
         JsonNode pokemon = root.get("pokemon");
 
@@ -155,7 +134,7 @@ public class PokemonService implements IPokemonService{
 
             for(JsonNode item : pokemon){
                 Long slot = item.get("slot").asLong();
-                String pokemonName = item.get("pokemon").get("name").asText();
+                String pokemonName = item.get("pokemon").get("name").asString();
 
                 PokemonWithTypeDto aux = new PokemonWithTypeDto(slot,pokemonName);
 
@@ -163,19 +142,76 @@ public class PokemonService implements IPokemonService{
 
             }
         }
-        PokemonByType pokemonByType = new PokemonByType(name,pokemonWithtype);
+        return  new PokemonByType(name,pokemonWithtype);
+    }
 
-        return pokemonByType;
+    @Override
+    public List<MovmentDto> processMovments(JsonNode root) {
+        List<MovmentDto> movmentDtoList = new ArrayList<>();
+        JsonNode moves = root.get("moves");
+        if(moves.isArray()){
+
+
+            for(JsonNode item : moves){
+
+                String name = item.get("move").get("name").asString();
+                JsonNode moveJson = pokeApiClient.getMoveJson(name);
+
+                Long id = moveJson.get("id").asLong();
+                Long accuracy = moveJson.get("accuracy").asLong();
+                Long pp = moveJson.get("pp").asLong();
+                Long power = moveJson.get("power").asLong();
+                Long priority = moveJson.get("priority").asLong();
+                MovmentType movmentType = MovmentType.valueOf(moveJson.get("damage_class").get("name").asString().toUpperCase());
+                JsonNode jsonNode = moveJson.get("effect_entries");
+                String description = " ";
+                for(JsonNode entrie :jsonNode){
+                    if(entrie.get("language").get("name").asString() == "en"){
+
+                        description = entrie.get("short_effect").asString();
+
+
+                    }
+                }
+
+                MovmentDto mov = new MovmentDto(id,name,movmentType,description,priority,power,pp,accuracy);
+                movmentDtoList.add(mov);
+
+
+
+            }
+        }
+        return movmentDtoList;
+    }
+
+    @Override
+    public PokemonViewDto processJson(String pokemonName) {
+        String json = pokeApiClient.getPokemonJson(pokemonName);
+
+        //Convertir de String a JsonNode
+        JsonNode root = objectMapper.readTree(json);
+
+        String name = root.get("name").asString();
+        Long id = root.get("id").asLong();
+
+        List<AbilityDto> abilitiesDtos =processAbilities(root);
+        StatsDto statDtos = processStats(root);
+        List<TypeDto> typesDto = processTypes(root);
+        List<MovmentDto> movmentDtos = this.processMovments(root);
+
+
+       PokemonViewDto pokemonViewDto = new PokemonViewDto(id,name,typesDto,abilitiesDtos,statDtos,movmentDtos);
+
+       this.loadPokemon(pokemonViewDto);
+
+       return  pokemonViewDto;
     }
 
 
+
     @Override
-    public PokemonViewDto loadPokemon(Pokemon pokemon) {
+    public void loadPokemon(PokemonViewDto pokemon) {
+        pokemonRepository.save( pokemonMapper.pokemonViewToPokemon(pokemon));
 
-
-
-
-
-        return null;
     }
 }

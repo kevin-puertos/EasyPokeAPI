@@ -16,10 +16,10 @@ public class Pokemon {
     String name;
     String image_url;
 
-    @OneToMany(mappedBy = "pokemon")
+    @OneToMany(mappedBy = "pokemon", fetch = FetchType.EAGER)
     Set<PokemonTypes> pokemonTypesList = new HashSet<>();
 
-    @OneToMany(mappedBy = "pokemon")
+    @OneToMany(mappedBy = "pokemon",fetch = FetchType.EAGER)
     Set<PokemonAbility> pokemonAbilities = new HashSet<>() ;
 
     @OneToOne(cascade = CascadeType.ALL)

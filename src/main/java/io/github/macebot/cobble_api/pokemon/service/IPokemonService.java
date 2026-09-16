@@ -10,19 +10,15 @@ public interface IPokemonService {
     PokemonViewDto viewPokemon(String pokemonName);
     PokemonByType getPokemonByType(String type);
 
-    PokemonViewDto loadPokemon(Pokemon pokemon);
+    void  loadPokemon(PokemonViewDto pokemon);
     PokemonViewDto processJson(String pokemonName);
 
-    String getPokemonJson(String pokemonName);
-    String getTypeJson(String type);
 
 
-
-
-
-    List<AbilityDto> processAbilities( JsonNode root,String json);
-    List<StatDto> processStats(JsonNode root,String json);
-    List<TypeDto> processTypes(JsonNode root,String json);
+    List<MovmentDto> processMovments(JsonNode root);
+    List<AbilityDto> processAbilities( JsonNode root);
+    StatsDto processStats(JsonNode root);
+    List<TypeDto> processTypes(JsonNode root);
 
 
 }

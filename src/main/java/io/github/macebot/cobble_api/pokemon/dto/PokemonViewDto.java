@@ -10,7 +10,7 @@ public record PokemonViewDto(
         String name,
         List<TypeDto> types,
         List<AbilityDto> abilities,
-        List<StatDto> stats
-
+        StatsDto stats,
+        List<MovmentDto> movments
 ) {
 }
