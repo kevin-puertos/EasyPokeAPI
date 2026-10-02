@@ -48,12 +48,19 @@ public class PokeApiClient implements IPokeApiClient {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         ((request, response) ->
-                        {throw new ResourceNotFound("move not found");}))
+                        {throw new ResourceNotFound("Move not found");}))
                 .body(JsonNode.class);
     }
 
-
-
-
-
+    @Override
+    public JsonNode getAbiltyJson(String name) {
+        return  restClient
+                .get()
+                .uri("/ability/{name}",name)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        ((request, response) ->
+                        {throw new ResourceNotFound("Ability not found");}))
+                .body(JsonNode.class);
+    }
 }

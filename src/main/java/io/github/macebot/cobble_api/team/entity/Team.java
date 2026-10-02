@@ -1,6 +1,6 @@
 package io.github.macebot.cobble_api.team.entity;
 
-import io.github.macebot.cobble_api.pokemon.entity.Pokemon;
+import io.github.macebot.cobble_api.pokemon.Pokemon;
 import io.github.macebot.cobble_api.user.entity.User;
 import jakarta.persistence.*;
 
