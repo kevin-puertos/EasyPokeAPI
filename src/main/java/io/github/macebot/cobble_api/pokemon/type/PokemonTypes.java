@@ -15,12 +15,12 @@ public class PokemonTypes {
     @ManyToOne
     @MapsId("pokemonId")
     @JoinColumn(name ="pokemon_id")
-    private Pokemon pokemon;
+    private Pokemon pokemon = new Pokemon();
 
     @ManyToOne
     @MapsId("typeName")
     @JoinColumn(name = "type_name")
-    private Type type;
+    private Type type = new Type();
 
 
 

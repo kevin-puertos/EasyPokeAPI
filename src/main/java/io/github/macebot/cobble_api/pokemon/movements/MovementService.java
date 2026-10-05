@@ -2,7 +2,7 @@ package io.github.macebot.cobble_api.pokemon.movements;
 
 import io.github.macebot.cobble_api.client.service.PokeApiClient;
 import io.github.macebot.cobble_api.exception.exeptions.ResourceNotFound;
-import io.github.macebot.cobble_api.pokemon.dto.PokemonViewDto;
+import io.github.macebot.cobble_api.pokemon.dto.PokemonLoadDto;
 import io.github.macebot.cobble_api.pokemon.Pokemon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ public class MovementService implements  IMovementService{
 
 
     @Override
-    public void createRelation(PokemonViewDto pokemon, Pokemon pokeToSave) {
+    public void createRelation(PokemonLoadDto pokemon, Pokemon pokeToSave) {
         for(MovementDto movement : pokemon.movements()){
 
             if(!movementRepository.existsById(movement.id())){

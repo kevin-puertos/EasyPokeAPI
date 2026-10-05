@@ -36,16 +36,27 @@ public class PokemonService implements IPokemonService{
         private final IStatsMapper statsMapper;
 
         @Override
-        public PokemonViewDto viewPokemon(String pokemonName) {
-            return this.processJson(pokemonName);
+        public Boolean pokemonExistByName(String pokemonName) {
+            return pokemonRepository.findByName(pokemonName).isPresent();
         }
 
         @Override
-        public Pokemon getPokemon(Long id) {
+        @Transactional
+        public PokemonViewDetailDto viewPokemon(String pokemonName) {
+            return pokemonMapper.pokemonToDetailDto(this.processJson(pokemonName));
+        }
+
+        @Override
+        public Pokemon getPokemonById(Long id) {
             return pokemonRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Pokemon not found"));
         }
 
-        @Override
+    @Override
+    public Pokemon getPokemonByName(String name) {
+        return pokemonRepository.findByName(name).orElseThrow(() -> new ResourceNotFound("Pokemon Not Found"));
+    }
+
+    @Override
         public StatsDto processStats(JsonNode root) {
             //Estadisticas
 
@@ -70,11 +81,9 @@ public class PokemonService implements IPokemonService{
                         case "special-attack":
                             statsDto.setAtaEsp(item.get("base_stat").asLong());
                             break;
-
                         case "special-defense":
                             statsDto.setDefEsp(item.get("base_stat").asLong());
                             break;
-
                         case "speed":
                             statsDto.setSpe(item.get("base_stat").asLong());
                             break;
@@ -117,11 +126,10 @@ public class PokemonService implements IPokemonService{
 
 
         @Override
-        public void loadPokemon(PokemonViewDto pokemon) {
+        public void loadPokemon(PokemonLoadDto pokemon) {
 
-            // Contruir las relaciones porque el mapper no lo hace
-            //Eliminar que haga las relaciones porque queda una siempre en null
             Pokemon pokeToSave = new Pokemon();
+
             pokeToSave.setId(pokemon.id());
             pokeToSave.setName(pokemon.name());
             pokeToSave.setImage_url(pokemon.image_url());
@@ -135,16 +143,14 @@ public class PokemonService implements IPokemonService{
 
         }
 
-        @Transactional
+
         @Override
-        public PokemonViewDto processJson(String pokemonName) {
-            String json = pokeApiClient.getPokemonJson(pokemonName);
+        public Pokemon processJson(String pokemonName) {
+            if (!this.pokemonExistByName(pokemonName)){
+                String json = pokeApiClient.getPokemonJson(pokemonName);
+                JsonNode root = objectMapper.readTree(json);
+                Long id = root.get("id").asLong();
 
-
-
-            JsonNode root = objectMapper.readTree(json);
-            Long id = root.get("id").asLong();
-            if(! pokemonRepository.existsById(id)){
                 String name = root.get("name").asString();
 
 
@@ -154,19 +160,24 @@ public class PokemonService implements IPokemonService{
                 List<TypeDto> typesDto = typeService.processTypes(root);
                 List<MovementDto> movementDtos = movementService.processMovements(root);
 
-                PokemonViewDto pokeview = new PokemonViewDto(id,name,imageUrl,typesDto,abilitiesDtos,statDtos, movementDtos);
+                PokemonLoadDto pokeLoad = new PokemonLoadDto(id, name, imageUrl, typesDto, abilitiesDtos, statDtos, movementDtos);
 
-                this.loadPokemon(pokeview);
-                return pokeview;
-
+                this.loadPokemon(pokeLoad);
             }
 
-            Pokemon pok = this.getPokemon(id);
-
-           return  pokemonMapper.pokemonToDto(pok);
+           return this.getPokemonByName(pokemonName);
         }
 
+    @Override
+    @Transactional
+    public PokemonSimpleDto viewSimplePokemon(String pokemonName) {
 
+            if(!this.pokemonExistByName(pokemonName)){
 
+                Pokemon poke = processJson(pokemonName);
+                return pokemonMapper.pokemonToSimpleDto(poke);
+            }
 
+        return pokemonMapper.pokemonToSimpleDto(this.getPokemonByName(pokemonName));
+    }
 }

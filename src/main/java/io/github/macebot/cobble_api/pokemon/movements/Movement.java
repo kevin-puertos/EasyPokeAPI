@@ -28,6 +28,6 @@ public class Movement {
     Long acurracy;
 
     @ManyToMany(mappedBy = "movements")
-    Set<Pokemon> pokemonSet;
+    Set<Pokemon> pokemonSet = new HashSet<>();
 
 }

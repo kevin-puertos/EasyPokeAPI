@@ -21,20 +21,20 @@ public class Pokemon {
     String image_url;
 
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    Set<PokemonTypes> types;
+    Set<PokemonTypes> types = new HashSet<>();
 
     @OneToMany(mappedBy = "pokemon",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    Set<PokemonAbility> abilities;
+    Set<PokemonAbility> abilities = new HashSet<>();
 
     @OneToOne(mappedBy = "pokemon",cascade = CascadeType.ALL)
     Stats stats;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "pokemon_movment",
+    @JoinTable(name = "pokemon_movement",
     joinColumns = @JoinColumn(name = "pokemon_id"),
-    inverseJoinColumns = @JoinColumn(name = "movment_id"))
-    Set<Movement> movements;
+    inverseJoinColumns = @JoinColumn(name = "movement_id"))
+    Set<Movement> movements = new HashSet<>();
 
 
 }

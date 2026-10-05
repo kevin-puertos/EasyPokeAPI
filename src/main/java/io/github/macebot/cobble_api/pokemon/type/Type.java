@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,8 @@ public class Type {
     @Column(name = "type_name")
     String name;
 
+    //Cambiar el list por un set
     @OneToMany(mappedBy = "type")
-    List<PokemonTypes> pokemonTypesList;
+    List<PokemonTypes> pokemonTypesList = new ArrayList<>();
 
 }

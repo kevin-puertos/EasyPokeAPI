@@ -1,7 +1,7 @@
 package io.github.macebot.cobble_api.pokemon.ability;
 import io.github.macebot.cobble_api.client.service.IPokeApiClient;
 import io.github.macebot.cobble_api.exception.exeptions.ResourceNotFound;
-import io.github.macebot.cobble_api.pokemon.dto.PokemonViewDto;
+import io.github.macebot.cobble_api.pokemon.dto.PokemonLoadDto;
 import io.github.macebot.cobble_api.pokemon.Pokemon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,7 +55,7 @@ public class AbilityService implements IAbilityService {
     }
 
     @Override
-    public void createRelation(PokemonViewDto pokemon, Pokemon pokeToSave) {
+    public void createRelation(PokemonLoadDto pokemon, Pokemon pokeToSave) {
         for (AbilityDto ability : pokemon.abilities()){
 
             if(!abilityRepository.existsById(ability.name())){

@@ -12,7 +12,7 @@ public class Stats {
     @Id
     @OneToOne(fetch = FetchType.LAZY)
      @JoinColumn(name ="pokemon_id")
-    Pokemon pokemon;
+    Pokemon pokemon = new Pokemon();
     private Long hp;
     private Long atk;
     private Long def;
