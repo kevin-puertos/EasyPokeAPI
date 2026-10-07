@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 
 public interface IPokeApiClient {
-    String getPokemonJson(String pokemonName);
+    String getPokemonJsonByName(String pokemonName);
+    String getPokemonJsonById(Long id);
     String getTypeJson(String type);
     JsonNode getMoveJson(String move);
     JsonNode getAbiltyJson(String name);

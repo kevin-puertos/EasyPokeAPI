@@ -7,18 +7,22 @@ import tools.jackson.databind.JsonNode;
 public interface IPokemonService {
     PokemonViewDetailDto viewPokemon(String pokemonName);
     PokemonSimpleDto viewSimplePokemon(String pokemonName);
-    Boolean pokemonExistByName(String pokemonName);
+    PokemonSimpleDto viewSimplePokemonByid (Long id);
 
+    Boolean pokemonExistByName(String pokemonName);
+    Boolean pokemonExistById(Long Id);
+    PokemonLoadDto createPokemonLoadDto(String json);
 
     PokemonByType getPokemonByType(String type);
     Pokemon getPokemonById(Long id);
     Pokemon getPokemonByName(String name);
+    PokemonViewDetailDto pokemonById(Long id);
     void  loadPokemon(PokemonLoadDto pokemon);
 
 
 
     //JSON
-    Pokemon processJson(String pokemonName);
+    Pokemon pokemonByName(String pokemonName);
     StatsDto processStats(JsonNode root);
 
 }
