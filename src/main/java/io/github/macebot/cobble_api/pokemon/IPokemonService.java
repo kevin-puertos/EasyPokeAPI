@@ -6,11 +6,13 @@ import tools.jackson.databind.JsonNode;
 
 public interface IPokemonService {
     PokemonViewDetailDto viewPokemon(String pokemonName);
-    PokemonSimpleDto viewSimplePokemon(String pokemonName);
+
+    PokemonSimpleDto viewSimplePokemonByName(String pokemonName);
     PokemonSimpleDto viewSimplePokemonByid (Long id);
 
     Boolean pokemonExistByName(String pokemonName);
     Boolean pokemonExistById(Long Id);
+
     PokemonLoadDto createPokemonLoadDto(String json);
 
     PokemonByType getPokemonByType(String type);
@@ -21,7 +23,7 @@ public interface IPokemonService {
 
 
 
-    //JSON
+
     Pokemon pokemonByName(String pokemonName);
     StatsDto processStats(JsonNode root);
 

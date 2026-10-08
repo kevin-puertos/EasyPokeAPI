@@ -13,6 +13,7 @@ import io.github.macebot.cobble_api.pokemon.type.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
@@ -134,14 +135,18 @@ public class PokemonService implements IPokemonService {
 
         JsonNode root = objectMapper.readTree(json);
         Long id = root.get("id").asLong();
+        
         String name = root.get("name").asString();
 
-
         List<AbilityDto> abilitiesDtos = abilityService.processAbilities(root);
+
         StatsDto statDtos = processStats(root);
+
         String imageUrl = root.get("sprites").get("other").get("official-artwork").get("front_default").asString();
+
         List<TypeDto> typesDto = typeService.processTypes(root);
-        List<MovementDto> movementDtos = movementService.processMovements(root);
+
+        List<MovementDto> movementDtos = movementService.processMovements(root);;
 
       return new PokemonLoadDto(id, name, imageUrl, typesDto, abilitiesDtos, statDtos, movementDtos);
     }
@@ -161,7 +166,6 @@ public class PokemonService implements IPokemonService {
         pokeToSave.setStats(statsMapper.pokemonStats(pokemon.stats()));
         pokeToSave.getStats().setPokemon(pokeToSave);
         pokemonRepository.save(pokeToSave);
-
     }
 
 
@@ -179,7 +183,8 @@ public class PokemonService implements IPokemonService {
     public PokemonViewDetailDto pokemonById(Long id) {
         if (!this.pokemonExistById(id)) {
             String json = pokeApiClient.getPokemonJsonById(id);
-            this.loadPokemon(this.createPokemonLoadDto(json));
+            PokemonLoadDto poke = this.createPokemonLoadDto(json);
+            this.loadPokemon(poke);
         }
 
         return pokemonMapper.pokemonToDetailDto(this.getPokemonById(id));
@@ -188,7 +193,7 @@ public class PokemonService implements IPokemonService {
 
     @Override
     @Transactional
-    public PokemonSimpleDto viewSimplePokemon(String pokemonName) {
+    public PokemonSimpleDto viewSimplePokemonByName(String pokemonName) {
 
         if (!this.pokemonExistByName(pokemonName)) {
             Pokemon poke = pokemonByName(pokemonName);

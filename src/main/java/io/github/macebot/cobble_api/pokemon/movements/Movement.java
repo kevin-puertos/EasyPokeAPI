@@ -30,4 +30,7 @@ public class Movement {
     @ManyToMany(mappedBy = "movements")
     Set<Pokemon> pokemonSet = new HashSet<>();
 
+    public Movement(Long id) {
+        this.id = id;
+    }
 }

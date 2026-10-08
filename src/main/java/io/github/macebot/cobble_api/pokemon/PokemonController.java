@@ -18,13 +18,13 @@ public class PokemonController {
 
 
     @GetMapping("/pokemonDetailByName/{namePokemon}")
-    public PokemonViewDetailDto viewPokemon(@PathVariable String namePokemon){
+    public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon){
         return pokemonService.viewPokemon(namePokemon);
     }
 
     @GetMapping("/pokemonSimpleByName/{namePokemon}")
     public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon){
-       return pokemonService.viewSimplePokemon(namePokemon);
+       return pokemonService.viewSimplePokemonByName(namePokemon);
     }
 
     @GetMapping("/pokemonDetailById/{id}")
