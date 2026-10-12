@@ -18,29 +18,29 @@ public class PokemonController {
 
 
     @GetMapping("/pokemonDetailByName/{namePokemon}")
-    public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon){
+    public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon) {
         return pokemonService.viewPokemon(namePokemon);
     }
 
     @GetMapping("/pokemonSimpleByName/{namePokemon}")
-    public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon){
-       return pokemonService.viewSimplePokemonByName(namePokemon);
+    public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon) {
+        return pokemonService.viewSimplePokemonByName(namePokemon);
     }
 
     @GetMapping("/pokemonDetailById/{id}")
-    public PokemonViewDetailDto viewDetailPokemonById(@PathVariable Long id){
+    public PokemonViewDetailDto viewDetailPokemonById(@PathVariable Long id) {
         return pokemonService.pokemonById(id);
     }
 
 
     @GetMapping("/pokemonSimpleById/{id}")
-    public PokemonSimpleDto viewSimplePokemonById(@PathVariable @Positive Long id){
+    public PokemonSimpleDto viewSimplePokemonById(@PathVariable @Positive Long id) {
         return pokemonService.viewSimplePokemonByid(id);
     }
 
     @GetMapping("/type/{type}")
-    public PokemonByType pokemonByType(@PathVariable String type){
-        return  pokemonService.getPokemonByType(type);
+    public PokemonByType pokemonByType(@PathVariable String type) {
+        return pokemonService.getPokemonByType(type);
     }
 
 

@@ -17,8 +17,7 @@ public class Type {
     @Id
     @Column(name = "type_name")
     String name;
-
-    //Cambiar el list por un set
+    
     @OneToMany(mappedBy = "type")
     List<PokemonTypes> pokemonTypesList = new ArrayList<>();
 

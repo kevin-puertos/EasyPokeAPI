@@ -100,7 +100,6 @@ public class PokemonService implements IPokemonService {
         return statsDto;
     }
 
-
     @Override
     public PokemonByType getPokemonByType(String type) {
         String json = pokeApiClient.getTypeJson(type);
@@ -129,13 +128,12 @@ public class PokemonService implements IPokemonService {
         return new PokemonByType(name, pokemonWithtype);
     }
 
-
     @Override
     public PokemonLoadDto createPokemonLoadDto(String json) {
 
         JsonNode root = objectMapper.readTree(json);
         Long id = root.get("id").asLong();
-        
+
         String name = root.get("name").asString();
 
         List<AbilityDto> abilitiesDtos = abilityService.processAbilities(root);
@@ -146,9 +144,10 @@ public class PokemonService implements IPokemonService {
 
         List<TypeDto> typesDto = typeService.processTypes(root);
 
-        List<MovementDto> movementDtos = movementService.processMovements(root);;
+        List<MovementDto> movementDtos = movementService.processMovements(root);
+        ;
 
-      return new PokemonLoadDto(id, name, imageUrl, typesDto, abilitiesDtos, statDtos, movementDtos);
+        return new PokemonLoadDto(id, name, imageUrl, typesDto, abilitiesDtos, statDtos, movementDtos);
     }
 
     @Override
