@@ -1,4 +1,4 @@
-# CobbleAPI
+# EasyPokeApi
 
 ## Descripción del Proyecto
 El fin de este proyecto es mostrar de manera gráfica y sencilla los datos de los pokemones
