@@ -15,6 +15,18 @@ public class PokeApiClient implements IPokeApiClient {
     private final RestClient restClient;
 
     @Override
+    public String getAllPokemons() {
+        return  restClient
+                .get()
+                .uri("/pokemon?limit=1032&offset=0")
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        ((request, response) ->
+                        {throw new ResourceNotFound("Error");}))
+                .body(String.class);
+    }
+
+    @Override
     public String getPokemonJsonByName(String pokemonName) {
         return  restClient
                 .get()

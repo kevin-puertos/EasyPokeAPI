@@ -17,6 +17,13 @@ public class PokemonController {
     private final IPokemonService pokemonService;
 
 
+    @GetMapping("/getAllPokemons")
+    public String getAllPokemons() {
+        pokemonService.getAllPokemons();
+        return "all Pokemons Loaded";
+    }
+
+
     @GetMapping("/pokemonDetailByName/{namePokemon}")
     public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon) {
         return pokemonService.viewPokemon(namePokemon);

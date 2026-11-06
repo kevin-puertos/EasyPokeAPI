@@ -22,7 +22,7 @@ public interface IPokemonService {
     void  loadPokemon(PokemonLoadDto pokemon);
 
 
-
+    void getAllPokemons();
 
     Pokemon pokemonByName(String pokemonName);
     StatsDto processStats(JsonNode root);
