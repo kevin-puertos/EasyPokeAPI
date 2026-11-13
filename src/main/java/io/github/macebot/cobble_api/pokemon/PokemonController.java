@@ -6,20 +6,24 @@ import io.github.macebot.cobble_api.pokemon.dto.PokemonLoadDto;
 import io.github.macebot.cobble_api.pokemon.dto.PokemonViewDetailDto;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class PokemonController {
 
     private final IPokemonService pokemonService;
 
 
-    @GetMapping("/getAllPokemons")
-    public String getAllPokemons() {
-        pokemonService.getAllPokemons();
+    @GetMapping("/loadAllPokemons")
+    public String loadAllPokemons() {
+        pokemonService.loadAllPokemons();
         return "all Pokemons Loaded";
     }
 
@@ -28,6 +32,13 @@ public class PokemonController {
     public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon) {
         return pokemonService.viewPokemon(namePokemon);
     }
+
+    @GetMapping("/getAllPokemons")
+    public ArrayList<PokemonSimpleDto> getAllPokemons(){
+        return pokemonService.getAllPokemons();
+    }
+
+
 
     @GetMapping("/pokemonSimpleByName/{namePokemon}")
     public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon) {

@@ -4,6 +4,8 @@ import io.github.macebot.cobble_api.pokemon.dto.*;
 import io.github.macebot.cobble_api.pokemon.stats.StatsDto;
 import tools.jackson.databind.JsonNode;
 
+import java.util.ArrayList;
+
 public interface IPokemonService {
     PokemonViewDetailDto viewPokemon(String pokemonName);
 
@@ -21,8 +23,8 @@ public interface IPokemonService {
     PokemonViewDetailDto pokemonById(Long id);
     void  loadPokemon(PokemonLoadDto pokemon);
 
-
-    void getAllPokemons();
+    void loadAllPokemons();
+    ArrayList<PokemonSimpleDto> getAllPokemons();
 
     Pokemon pokemonByName(String pokemonName);
     StatsDto processStats(JsonNode root);

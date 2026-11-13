@@ -9,6 +9,9 @@ import io.github.macebot.cobble_api.pokemon.stats.IStatsMapper;
 import io.github.macebot.cobble_api.pokemon.type.ITypeMapper;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {IStatsMapper.class, IAbilityMapper.class, ITypeMapper.class, IMovementMapper.class})
 public interface IPokemonMapper {
 
@@ -19,5 +22,6 @@ public interface IPokemonMapper {
 
     PokemonSimpleDto pokemonToSimpleDto(Pokemon pokemon);
 
+    ArrayList<PokemonSimpleDto> pokemonsToListSimple(List<Pokemon> pokemonList);
 
 }

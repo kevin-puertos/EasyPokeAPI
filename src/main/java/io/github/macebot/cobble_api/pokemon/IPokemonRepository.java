@@ -12,4 +12,5 @@ public interface IPokemonRepository extends JpaRepository<Pokemon,Long> {
    Optional<Pokemon> findByName(String name);
 
 
+
 }

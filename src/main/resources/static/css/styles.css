@@ -1,0 +1,153 @@
+:root {
+    --background-color: #0b153f;
+    --card-color: #1a285c;       /* Un azul un poco más vibrante para que resalte del fondo */
+    --card-hover-color: #23357a; /* Color cuando pasas el mouse por encima */
+    --text-color: #F4F6FF;
+    --text-secondary: #a0aec0;   /* Color grisáceo sutil para los tipos o datos secundarios */
+    --accent-color: #64D8CB;     /* Tu color aqua para bordes y detalles */
+    
+    /* Colores clásicos para los tipos de Pokémon (puedes añadir más si quieres) */
+    --type-grass: #48d0b0;
+    --type-poison: #a040a0;
+    --type-fire: #fb6c6c;
+    --type-water: #76bdfe;
+    --type-psychic: #f85888;
+    --type-flying: #a890f0;
+    --type-default: #718096;
+}
+
+/* Estilos Generales y Tipografía */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Encabezado */
+.header {
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+    width: 100%;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--text-color);
+    margin: 0;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor del Grid */
+.pokemon-grid-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas en pantallas grandes */
+    gap: 25px; /* Más separación para que respire el diseño */
+    max-width: 1000px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tarjeta de cada Pokémon */
+.pokemon-item {
+    background-color: var(--card-color);
+    border: 2px solid transparent; /* Empezamos sin borde visible */
+    border-radius: 20px; /* Bordes redondeados modernos */
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra suave para dar profundidad */
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.pokemonId {
+    font-family: 'monospace', sans-serif; /* Fuente tipo marcador/pokedex */
+    font-weight: bold;
+    color: #888888;            /* Color gris sutil */
+    font-size: 1.1rem;
+    margin-right: 15px;        /* Separa el ID del contenido que pongas a la derecha */
+    min-width: 40px;           /* Evita que el número se encoja si es muy largo */
+}
+
+
+/* Efecto al pasar el mouse por encima (Hover) */
+.pokemon-item:hover {
+    transform: translateY(-8px); /* La tarjeta sube un poco */
+    background-color: var(--card-hover-color);
+    border-color: var(--accent-color); /* Se ilumina tu color aqua */
+    box-shadow: 0 12px 24px rgba(100, 216, 203, 0.2); /* Sombra brillante */
+}
+
+/* Ajuste de la Imagen */
+.pokemon-item img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0px 8px 8px rgba(0, 0, 0, 0.3)); /* Sombra a la silueta del pokemon */
+    transition: transform 0.3s ease;
+}
+
+.pokemon-item:hover img {
+    transform: scale(1.08); /* El Pokémon se agranda ligeramente al hacer hover */
+}
+
+/* Texto del Nombre */
+.pokemon-name-text {
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: capitalize; /* Convierte 'bulbasaur' en 'Bulbasaur' automáticamente */
+    color: var(--text-color);
+    margin: 15px 0 8px 0;
+}
+
+/* --- Contenedor de Tipos (Badges) --- */
+/* Asegúrate de envolver tus textos de tipos en etiquetas <span> en tu JS */
+.pokemon-types {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.pokemon-types span {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: var(--text-secondary); /* Color por defecto */
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Clases dinámicas por si en tu JS añades la clase según el tipo (ej: class="type-fire") */
+.pokemon-types span.fire { background-color: var(--type-fire); }
+.pokemon-types span.water { background-color: var(--type-water); }
+.pokemon-types span.grass { background-color: var(--type-grass); }
+.pokemon-types span.poison { background-color: var(--type-poison); }
+.pokemon-types span.psychic { background-color: var(--type-psychic); }
+.pokemon-types span.flying { background-color: var(--type-flying); }
+
+
+/* --- Diseño Responsivo (Celulares y Tablets) --- */
+@media (max-width: 768px) {
+    .pokemon-grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
+        gap: 15px;
+    }
+    .header h1 { font-size: 2rem; }
+}
+
+@media (max-width: 480px) {
+    .pokemon-grid-container {
+        grid-template-columns: 1fr; /* 1 sola columna en celulares */
+    }
+}

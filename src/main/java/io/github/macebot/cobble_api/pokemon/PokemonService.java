@@ -12,10 +12,15 @@ import io.github.macebot.cobble_api.pokemon.stats.StatsDto;
 import io.github.macebot.cobble_api.pokemon.type.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +135,18 @@ public class PokemonService implements IPokemonService {
 
 
     @Override
-    public void getAllPokemons() {
+    public ArrayList<PokemonSimpleDto> getAllPokemons() {
+
+        Pageable firstFiveTeen = PageRequest.of(0,50);
+
+
+
+
+        return pokemonMapper.pokemonsToListSimple(pokemonRepository.findAll(Sort.by(Sort.Direction.ASC,"id")));
+    }
+
+    @Override
+    public void loadAllPokemons() {
     String json = pokeApiClient.getAllPokemons();
 
     JsonNode root = objectMapper.readTree(json);
