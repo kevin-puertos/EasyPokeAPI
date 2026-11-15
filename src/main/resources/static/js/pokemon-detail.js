@@ -3,7 +3,7 @@ const id = params.get('id');
 
 
 
-const API_URL = `http://localhost:8080/pokemonDetailById/${id}`;
+const API_URL = `http://localhost:8080/api/v1/pokemons/detail/${id}`;
 
 const pokemonContainer = document.getElementById("pokemon-container")
 

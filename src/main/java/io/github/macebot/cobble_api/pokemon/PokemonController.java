@@ -6,16 +6,14 @@ import io.github.macebot.cobble_api.pokemon.dto.PokemonLoadDto;
 import io.github.macebot.cobble_api.pokemon.dto.PokemonViewDetailDto;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/v1/pokemons")
 public class PokemonController {
 
     private final IPokemonService pokemonService;
@@ -27,31 +25,27 @@ public class PokemonController {
         return "all Pokemons Loaded";
     }
 
-
-    @GetMapping("/pokemonDetailByName/{namePokemon}")
-    public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon) {
-        return pokemonService.viewPokemon(namePokemon);
-    }
-
-    @GetMapping("/getAllPokemons")
+    @GetMapping()
     public ArrayList<PokemonSimpleDto> getAllPokemons(){
         return pokemonService.getAllPokemons();
     }
 
-
-
-    @GetMapping("/pokemonSimpleByName/{namePokemon}")
-    public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon) {
-        return pokemonService.viewSimplePokemonByName(namePokemon);
+    @GetMapping("/detail/{namePokemon:[a-zA-Z-]+}")
+    public PokemonViewDetailDto viewDetailPokemonByName(@PathVariable String namePokemon) {
+        return pokemonService.viewPokemon(namePokemon);
     }
 
-    @GetMapping("/pokemonDetailById/{id}")
+    @GetMapping("/detail/{id:[0-9]+}")
     public PokemonViewDetailDto viewDetailPokemonById(@PathVariable Long id) {
         return pokemonService.pokemonById(id);
     }
 
+    @GetMapping("/simple/{namePokemon:[a-zA-Z-]+}")
+    public PokemonSimpleDto viewSimplePokemon(@PathVariable String namePokemon) {
+        return pokemonService.viewSimplePokemonByName(namePokemon);
+    }
 
-    @GetMapping("/pokemonSimpleById/{id}")
+    @GetMapping("/simple/{id:[0-9]+}")
     public PokemonSimpleDto viewSimplePokemonById(@PathVariable @Positive Long id) {
         return pokemonService.viewSimplePokemonByid(id);
     }
