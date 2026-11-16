@@ -1,24 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/pokemon-detail.js"></script>
+    <title>Pokémon Detail</title>
+    <link rel="stylesheet" href="/css/pokemon-detail.css">
+</head>
 
+<body>
 
-    <title>EasyPokeAPI</title>
-    
-    <main id ="pokemon-container">
-        
+    <main class="pokemon-container" id="pokemon-container">
+        <!-- Botón para volver a la página principal-->
+        <a href="index.html" class="back-button">
+        ← Volver a la Pokédex</a>
 
+        <!-- Encabezado -->
+        <header class="pokemon-header">
+            <span id="pokemon-id" class="pokemon-id"></span>
+            <h1 id="pokemon-name">Cargando...</h1>
+        </header>
 
+        <!-- Información principal -->
+        <section class="pokemon-content">
 
+            <!-- Imagen -->
+            <div class="pokemon-image-container">
+                <img id="pokemon-image" src="" alt="Pokemon">
+            </div>
 
+            <!-- Información secundaria -->
+            <div class="pokemon-information">
+
+                <section class="information-section">
+                    <h2>Tipos</h2>
+                    <div id="pokemon-types" class="pokemon-types"></div>
+                </section>
+
+                <section class="information-section">
+                    <h2>Estadísticas</h2>
+                    <div id="pokemon-stats" class="pokemon-stats"></div>
+                </section>
+
+                <section class="information-section">
+                    <h2>Habilidades</h2>
+                    <div id="pokemon-abilities" class="pokemon-abilities"></div>
+                </section>
+
+            </div>
+
+        </section>
+
+        <!-- Movimientos -->
+        <section class="moves-section">
+
+            <h2>Movimientos</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Potencia</th>
+                            <th>Precisión</th>
+                            <th>PP</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="pokemon-moves">
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
 
     </main>
 
-
     <script src="/js/pokemon-detail.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
 
+</body>
+</html>
