@@ -24,6 +24,7 @@ Todo esto con SpringBoot y HTML, CSS, Javascript y una base de datos la cual est
 
 
 
+
 ## 📂 Estructura General del proyecto
 
 ```text
@@ -49,7 +50,10 @@ src/
 ---
 
 
+
+
 ## 📋 Endpoints
+
 
 ### 📚 Documentación de la API
 
@@ -75,6 +79,9 @@ http://localhost:8080/swagger-ui/index.html
 | `GET`    | `/api/v1/pokemons/type/{typeName}` | Obtener todos los pokemones que pertenecen a un tipo         |
 
 
+
+
+
 ## ⚙️ Configuración
 
 La aplicación utiliza variables de entorno para configurar la conexión
@@ -97,7 +104,8 @@ Luego tiene que agregar ese archivo .env a las variables de entorno:
 
 `Run → Edit Configurations → Environment variables → Buscar y seleccionar el archivo .env`
 
-*Un ejemplo de un archivo .env está subido al repositorio como '.env.example'
+
+*Un ejemplo de un archivo .env está subido al repositorio como '.env.example'*
 
 
 Estos valores son necesarios tanto para el archivo 'aplication.properties' como para el 'compose.yml':
@@ -134,6 +142,8 @@ volumes:
 ```
 
 
+### Notas
+- El proyecto contiene Usuarios y Equipos pero falta la lógica para su implementación, esto fue con el fin de dejar la api lo mas básica posible. 
 
 
 
