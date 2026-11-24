@@ -38,21 +38,17 @@ public class PokemonService implements IPokemonService {
     private final IMovementService movementService;
     private final IStatsMapper statsMapper;
 
+    //Testeado
     @Override
     public Boolean pokemonExistByName(String pokemonName) {
         return pokemonRepository.findByName(pokemonName).isPresent();
     }
-
+    //Testeado
     @Override
     public Boolean pokemonExistById(Long Id) {
         return pokemonRepository.findById(Id).isPresent();
     }
 
-    @Override
-    @Transactional
-    public PokemonViewDetailDto viewPokemon(String pokemonName) {
-        return pokemonMapper.pokemonToDetailDto(this.pokemonByName(pokemonName));
-    }
 
     @Override
     public Pokemon getPokemonById(Long id) {
@@ -62,6 +58,12 @@ public class PokemonService implements IPokemonService {
     @Override
     public Pokemon getPokemonByName(String name) {
         return pokemonRepository.findByName(name).orElseThrow(() -> new ResourceNotFound("Pokemon Not Found"));
+    }
+
+    @Override
+    @Transactional
+    public PokemonViewDetailDto viewPokemon(String pokemonName) {
+        return pokemonMapper.pokemonToDetailDto(this.pokemonByName(pokemonName));
     }
 
     @Override

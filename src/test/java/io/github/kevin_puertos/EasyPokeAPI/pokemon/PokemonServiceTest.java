@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
@@ -53,40 +53,11 @@ class PokemonServiceTest {
         Set<PokemonAbility> abilities = new HashSet<>();
 
         PokemonAbility pokemonAbility1 = new PokemonAbility(new PokemonAbilityId(22L,1,false,"keen-eye"), pokemonTest,ability1);
-        PokemonAbility pokemonAbility2 = new PokemonAbility(new PokemonAbilityId(22L,1,false,"sniper"), pokemonTest,ability1);
+        PokemonAbility pokemonAbility2 = new PokemonAbility(new PokemonAbilityId(22L,3,false,"sniper"), pokemonTest,ability2);
         abilities.add(pokemonAbility1);
         abilities.add(pokemonAbility2);
         return abilities;
     }
-
-    @Test
-    void getPokemonByName_shouldReturnPokemon_whenExists() {
-
-        // Arrange: el repositorio devuelve el Optional con Fearow
-        when(pokemonService.pokemonExistByName("fearow")).thenReturn(true);
-
-        // Act : Se ejecuta el método real
-        boolean exists = pokemonService.pokemonExistByName("fearow");
-
-        // Assert : Se verifica el resultado e interacción
-        assertTrue(exists);
-        verify(pokemonRepository).findByName("fearow");
-    }
-
-    @Test
-    void pokemonExistById() {
-
-        // Arrange: el repositorio devuelve el Optional con Fearow
-        when(pokemonService.pokemonExistById(22L)).thenReturn(true);
-
-        // Act : Se ejecuta el método real
-        boolean exists = pokemonService.pokemonExistById(22L);
-
-        // Assert : Se verifica el resultado e interacción
-        assertTrue(exists);
-        verify(pokemonRepository).findById(22L);
-    }
-
     private Pokemon createFearow(){
         //Crear  datos para los tests
 
@@ -122,8 +93,69 @@ class PokemonServiceTest {
     }
 
 
+    @Test
+    void pokemonExistByName_shouldReturnTrue_whenExists() {
+        // Arrange: el repositorio devuelve el Optional con Fearow
+        // when() siempre se aplica a las dependencias de la clase que estamos probando, nunca a la misma clase
+        when(pokemonRepository.findById(22L).isPresent()).thenReturn(true);
+
+        // Act : Se ejecuta el método real
+        boolean exists = pokemonService.pokemonExistByName("fearow");
+
+        // Assert : Se verifica el resultado e interacción
+        assertTrue(exists);
+        verify(pokemonRepository).findByName("fearow");
+    }
+
+    @Test
+    void pokemonExistById_shouldReturnTrue_whenExists() {
+
+        // Arrange: el repositorio devuelve el Optional con Fearow
+        when(pokemonRepository.findByName("fearow").isPresent()).thenReturn(true);
+
+        // Act : Se ejecuta el método real
+        boolean exists = pokemonService.pokemonExistById(22L);
+
+        // Assert : Se verifica el resultado e interacción
+        assertTrue(exists);
+        verify(pokemonRepository).findById(22L);
+    }
 
 
+    //TODO Crear los test negativos
+    @Test
+    void pokemonExistById_shouldReturnFalse_whenDoesNotExist(){
+
+    }
+
+    @Test
+    void viewPokemon() {
+    }
+
+    @Test
+    void getPokemonByName_shouldReturnPokemon_whenExists() {
+        //Arrange
+        when(pokemonRepository.findByName("fearow")).thenReturn(Optional.of(pokemonTest));
 
 
+        // Act
+        Pokemon result = pokemonService.getPokemonByName("fearow");
+
+
+        //Assert
+        assertAll(
+                () -> assertEquals(22L, result.getId()),
+                () -> assertEquals("fearow", result.getName()),
+                () -> assertEquals(2, result.getTypes().size()),
+                () -> assertThat(result.getTypes()) //Obtengo el set de result
+                        .hasSize(2) //Se espera que tenga dos tipos
+                        .extracting( pt  -> pt.getType().getName()) // Obtengo el nombre de los tipos, pt -> PokemonType
+                        .containsExactlyInAnyOrder("normal","flying"),//Se espera que contenga esos tipos sin importar el orden
+                () -> assertEquals(2, result.getAbilities().size()), //Se espera que el set de habilidades tenga 2
+                () -> assertEquals(100L, result.stats.getSpe()));
+
+
+        verify(pokemonRepository).findByName("fearow");
+
+    }
 }

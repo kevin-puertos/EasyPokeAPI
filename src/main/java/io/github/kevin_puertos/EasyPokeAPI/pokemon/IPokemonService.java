@@ -4,7 +4,6 @@ import io.github.kevin_puertos.EasyPokeAPI.pokemon.dto.PokemonByType;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.dto.PokemonLoadDto;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.dto.PokemonSimpleDto;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.dto.PokemonViewDetailDto;
-import io.github.macebot.cobble_api.pokemon.dto.*;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.stats.StatsDto;
 import tools.jackson.databind.JsonNode;
 import java.util.ArrayList;
