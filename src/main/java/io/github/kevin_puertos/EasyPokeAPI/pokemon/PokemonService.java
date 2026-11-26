@@ -38,23 +38,22 @@ public class PokemonService implements IPokemonService {
     private final IMovementService movementService;
     private final IStatsMapper statsMapper;
 
-    //Testeado
+    //Testeado - Falta negativo
     @Override
     public Boolean pokemonExistByName(String pokemonName) {
         return pokemonRepository.findByName(pokemonName).isPresent();
     }
-    //Testeado
-    @Override
+    //Testeado - Falta negativo    @Override
     public Boolean pokemonExistById(Long Id) {
         return pokemonRepository.findById(Id).isPresent();
     }
 
-
+    //Testeado - Falta negativo
     @Override
     public Pokemon getPokemonById(Long id) {
         return pokemonRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Pokemon not found"));
     }
-
+    //Testeado - Falta negativo
     @Override
     public Pokemon getPokemonByName(String name) {
         return pokemonRepository.findByName(name).orElseThrow(() -> new ResourceNotFound("Pokemon Not Found"));

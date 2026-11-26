@@ -3,6 +3,7 @@ package io.github.kevin_puertos.EasyPokeAPI.pokemon;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.ability.Ability;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.ability.PokemonAbility;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.ability.PokemonAbilityId;
+import io.github.kevin_puertos.EasyPokeAPI.pokemon.dto.PokemonViewDetailDto;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.stats.Stats;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.type.PokemonTypeId;
 import io.github.kevin_puertos.EasyPokeAPI.pokemon.type.PokemonTypes;
@@ -40,7 +41,7 @@ class PokemonServiceTest {
 
     @BeforeEach
     void setUp() {
-        pokemonTest = createFearow();
+        pokemonTest = createFearowPokemon();
 
 
 
@@ -58,7 +59,9 @@ class PokemonServiceTest {
         abilities.add(pokemonAbility2);
         return abilities;
     }
-    private Pokemon createFearow(){
+
+    //Crea un objeto Pokemon
+    private Pokemon createFearowPokemon(){
         //Crear  datos para los tests
 
         //Pokemon 1°
@@ -90,6 +93,14 @@ class PokemonServiceTest {
         pokemonTest.setAbilities(abilities);
         pokemonTest.setStats(stats);
         return  pokemonTest;
+    }
+
+
+    private PokemonViewDetailDto createPikachuDetailDto(){
+
+
+
+        PokemonViewDetailDto pikachu = new PokemonViewDetailDto();
     }
 
 
@@ -129,10 +140,6 @@ class PokemonServiceTest {
     }
 
     @Test
-    void viewPokemon() {
-    }
-
-    @Test
     void getPokemonByName_shouldReturnPokemon_whenExists() {
         //Arrange
         when(pokemonRepository.findByName("fearow")).thenReturn(Optional.of(pokemonTest));
@@ -158,4 +165,9 @@ class PokemonServiceTest {
         verify(pokemonRepository).findByName("fearow");
 
     }
+
+
+
+
+
 }
